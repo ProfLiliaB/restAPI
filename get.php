@@ -1,15 +1,17 @@
 <?php
-$url = 'http://localhost/classes/rest.php';
-$ch = curl_init($url);
+include_once "config.php";
+
+$ch = curl_init(URL);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
 $response = curl_exec($ch);
+$codigoResposta = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
 if ($response === false) {
-    $error = curl_error($ch);
-    curl_close($ch);
-    die('Erro na requisição cURL: ' . $error);
+    echo json_encode(['error' => curl_error($ch)]);
+} else {
+    echo "<h3>Código HTTP: $codigoResposta</h3>";
+    echo "<pre>";
+    print_r(json_decode($response, true));
 }
 curl_close($ch);
-$data = json_decode($response, true);
-echo "<pre>";
-print_r($data);
-?>

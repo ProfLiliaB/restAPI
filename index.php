@@ -16,7 +16,7 @@
     </p>
     <h2>REST</h2>
     <p>REST: é o conjunto de conceitos ou princípios arquiteturais que define como uma API deve ser estruturada.</p>
-    <p>APIs REST faz requisições HTTP (GET, POST, PUT e DELETE) que retorna em formato <b>JSON</b>.</p>
+    <p>APIs REST faz requisições HTTP (<a href="get.php">GET</a>, <a href="post.php">POST</a>, <a href="put.php">PUT</a> e <a href="del.php">DELETE</a>) que retorna em formato <b>JSON</b>.</p>
     <h3>Funções nativas do PHP</h3>
     <h4>file_get_contents()</h4>
     <p>Pegar conteúdo de um arquivo</p>

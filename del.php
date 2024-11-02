@@ -1,10 +1,9 @@
 <?php
-$url = 'http://localhost/classes/rest.php';
-
+include_once "config.php";
 $data = [
     'id' => 19 
 ];
-$ch = curl_init($url);
+$ch = curl_init(URL);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'DELETE');
 curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
@@ -13,8 +12,13 @@ curl_setopt($ch, CURLOPT_HTTPHEADER, [
 ]);
 
 $response = curl_exec($ch);
-curl_close($ch);
+$codigoResposta = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
-$data = json_decode($response, true);
-echo "<pre>";
-print_r($data);
+if ($response === false) {
+    echo json_encode(['error' => curl_error($ch)]);
+} else {
+    echo "<h3>Código HTTP: $codigoResposta</h3>";
+    echo "<pre>";
+    print_r(json_decode($response, true));
+}
+curl_close($ch);

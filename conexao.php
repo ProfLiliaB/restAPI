@@ -1,6 +1,6 @@
 <?php
 $host = "localhost";
-$banco = "lojatechteste";
+$banco = "lojatech";
 $user = "root";
 $senha = "";
 $conexao = new PDO("mysql:host=$host;dbname=$banco", $user, $senha);

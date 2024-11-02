@@ -1,13 +1,12 @@
 <?php
-$url = 'http://localhost/classes/rest.php';
+include_once "config.php";
 
 $data = [
-    'nome'  => 'Pessoa 2',
-    'email' => 'pessoa2@email.com',
+    'nome'  => 'Pessoa Nova',
+    'email' => 'pessoa.nova@email.com',
     'senha' => '123'
 ];
-
-$ch = curl_init($url);
+$ch = curl_init(URL);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 curl_setopt($ch, CURLOPT_POST, true);
 curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
@@ -15,8 +14,13 @@ curl_setopt($ch, CURLOPT_HTTPHEADER, [
     'Content-Type: application/json'
 ]);
 $response = curl_exec($ch);
-curl_close($ch);
+$codigoResposta = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
-$data = json_decode($response, true);
-echo "<pre>";
-print_r($data);
+if ($response === false) {
+    echo json_encode(['error' => curl_error($ch)]);
+} else {
+    echo "<h3>Código HTTP: $codigoResposta</h3>";
+    echo "<pre>";
+    print_r(json_decode($response, true));
+}
+curl_close($ch);
