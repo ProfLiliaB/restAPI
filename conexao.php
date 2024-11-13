@@ -1,6 +1,6 @@
 <?php
 $host = "localhost"; 
-$db = "agenda";
+$db = "lojatech";
 $user = "root";
 $senha = "";
  

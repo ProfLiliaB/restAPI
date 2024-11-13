@@ -68,6 +68,7 @@
         button:hover {
             background-color: #0056b3;
         }
+
         p {
             width: 500px;
             text-overflow: ellipsis;
@@ -77,29 +78,45 @@
 
 <body>
     <main class="container">
-        <?php
-        include_once "conexao.php";
-        if (session_status() == PHP_SESSION_NONE) {
-            session_start();
-        }
-        if (isset($_SESSION)) {
-            require_once "jwt.php";
-            echo "<h1>API SENAC Test</h1>";
-            $wrap = wordwrap($API_KEY, 50, "<br />\n", true);
-            echo '<p>Sua API_KEY = ' . $wrap . '</p>';
-            echo '
-            <ul>
-                <li><a href="get.php">GET</a></li>
-                <li><a href="gets.php">GET JWT</a></li>
-                <li><a href="post.php">POST</a></li>
-                <li><a href="put.php">PUT</a></li>
-                <li><a href="del.php">DELETE</a></li>
-                <li><a href="logout.php">SAIR</a></li>
-            </ul>';
-        } else {
-            header("location: login.php");
-        }
-        ?>
+        <div class="login-container">
+            <?php
+            include_once "conexao.php";
+            if (session_status() == PHP_SESSION_NONE) {
+                session_start();
+            }
+            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                $email = $_POST['username'];
+                $senha = $_POST['password'];
+                $selectEmail = $conexao->prepare("SELECT * FROM usuario WHERE email = :email");
+                $selectEmail->bindParam('email', $email);
+                $selectEmail->execute();
+                $rs = $selectEmail->fetch(PDO::FETCH_ASSOC);
+                if ($rs) {
+                    $senha_banco = $rs['senha'];
+                    $email_banco = $rs['email'];
+                    $nome = $rs['nome'];
+                    $id =  $rs['id'];
+                    if (($email == $email_banco) && ($senha == $senha_banco)) {
+                        $_SESSION['email'] = $email_banco;
+                        $_SESSION['nome'] = $nome;
+                        $_SESSION['id'] = $id;
+                    } else {
+                        echo "Login ou senha inválidos.";
+                    }
+                } else {
+                    header('location: ./');
+                }
+            }
+            ?>
+            <h2>Login para consumir API</h2>
+            <form method="post">
+                <label for="username">Usuário:</label>
+                <input type="text" id="username" name="username" required>
+                <label for="password">Senha:</label>
+                <input type="password" id="password" name="password" required>
+                <button type="submit">Entrar</button>
+            </form>
+        </div>
     </main>
 </body>
 
