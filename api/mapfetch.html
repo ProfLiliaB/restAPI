@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MAPs</title>
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.js"></script>
+    <link
+      href="https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div id="map" style="width: 100%; height: 400px"></div>
+    <script>
+      mapboxgl.accessToken = "YOUR_MAPBOX_ACCESS_TOKEN";
+      const map = new mapboxgl.Map({
+        container: "map", // ID do elemento HTML
+        style: "mapbox://styles/mapbox/streets-v11", // Estilo do mapa
+        center: [-74.5, 40], // Posição inicial [longitude, latitude]
+        zoom: 9, // Nível de zoom inicial
+      });
+      // Add navigation control (the +/- zoom buttons)
+      map.addControl(new mapboxgl.NavigationControl());
+
+      const geocodingEndpoint = "https://api.mapbox.com/geocoding/v5/mapbox.places/";
+      const address = "R. Arlindo Silva, Estufa II, Ubatuba - SP";
+      const requestUrl = `${geocodingEndpoint}${encodeURIComponent(address)}.json?access_token=${mapboxgl.accessToken}`;
+      fetch(requestUrl)
+        .then((response) => response.json())
+        .then((data) => {
+          const coordinates = data.features[0].center;
+          map.setCenter(coordinates);
+          new mapboxgl.Marker().setLngLat(coordinates).addTo(map);
+        })
+        .catch((error) => console.error("Erro na geocodificação:", error));
+    </script>
+  </body>
+</html>
+<!-- 
+https://freesvgicons.com/ 
+ https://www.mapbox.com/
+ https://docs.mapbox.com/api/overview/
+ -->
