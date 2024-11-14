@@ -1,7 +1,7 @@
 <?php
 include_once "config.php";
 
-$ch = curl_init(URLS);
+$ch = curl_init(URL);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
 $response = curl_exec($ch);

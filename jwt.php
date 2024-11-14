@@ -4,7 +4,7 @@ include_once "conexao.php";
 require_once "config.php";
 
 use Firebase\JWT\JWT;
-if (session_status() == PHP_SESSION_NONE) {
+if (isset($_SESSION['PHPSESSID'])) {
     session_start();
 }
 //Pegar dados do usuário logado
@@ -13,7 +13,7 @@ $email = $_SESSION['email'] ?? 'email@email.com';
 $nome = $_SESSION['nome'] ?? "Jhon Doe";
 if ($userId) {
     $payload = [
-        'iss' => 'http://localhost/api/jwt.php',     // Emissor do token
+        'iss' => 'http://localhost/rest/jwt.php',     // Emissor do token
         //'aud' => 'http://localhost/api/',     // Público (onde o token será usado)
         'iat' => time(),                // Emitido em
         'exp' => time() + 3600,         // Expira em 1 hora

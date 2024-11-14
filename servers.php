@@ -9,7 +9,7 @@ require 'vendor/autoload.php';
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 
-require "config.php";
+include_once "config.php";
 include_once "conexao.php";
 
 $headers = getallheaders();
@@ -18,8 +18,16 @@ if (isset($headers['Authorization'])) {
     $assinatura = new Key(CHAVE_SECRETA, 'HS256');
     $usuario = JWT::decode($token, $assinatura);
     if ($usuario) {
-        //inserir conteúdo do rest.php
-        echo json_encode(['message' => 'Acesso autorizado', 'data' => $usuario->data]);
+        //echo json_encode(['message' => 'Acesso autorizado', 'data' => $usuario->data]);
+        try {
+            $select = $conexao->prepare("SELECT * FROM usuario");
+            $select->execute();
+            $data = $select->fetchAll(PDO::FETCH_ASSOC);
+            echo json_encode($data);
+        } catch (PDOException $e) {
+            http_response_code(500);
+            echo json_encode(['error' => $e->getMessage()]);
+        }
     } else {
         http_response_code(401);
         echo json_encode(['message' => 'Token inválido ou expirado']);

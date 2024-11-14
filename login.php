@@ -95,7 +95,7 @@
                     $senha_banco = $rs['senha'];
                     $email_banco = $rs['email'];
                     $nome = $rs['nome'];
-                    $id =  $rs['id'];
+                    $id =  $rs['id_usuario'];
                     if (($email == $email_banco) && ($senha == $senha_banco)) {
                         $_SESSION['email'] = $email_banco;
                         $_SESSION['nome'] = $nome;
@@ -103,8 +103,9 @@
                     } else {
                         echo "Login ou senha inválidos.";
                     }
+                    header("location: ./");
                 } else {
-                    header('location: ./');
+                    echo "Login ou senha inválidos.";
                 }
             }
             ?>
