@@ -1,21 +1,27 @@
 <?php
-require_once "config.php";
-require_once "jwt.php";
+include_once "config.php";
 
-$ch = curl_init();
-curl_setopt($ch, CURLOPT_URL, URL_GET);
+$data = [
+    'nome'  => 'Pessoa Nova',
+    'email' => 'pessoa.nova@email.com',
+    'senha' => '123'
+];
+$ch = curl_init(URL_POST);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
 curl_setopt($ch, CURLOPT_HTTPHEADER, [
     "Authorization: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0L3Jlc3Qvand0LnBocCIsImlhdCI6MTczMTk0NzE5MywiZXhwIjoxNzMxOTUwNzkzLCJkYXRhIjp7InVzZXJJZCI6MTIzLCJub21lIjoiSmhvbiBEb2UiLCJlbWFpbCI6ImVtYWlsQGVtYWlsLmNvbSJ9fQ.ifGodc9S8QXprWNRwEPxkrzxcsAAkxlcqSBvWx1Qy-I", 
     "Content-Type: application/json" 
 ]);
 $response = curl_exec($ch);
+$codigoResposta = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
 if ($response === false) {
-    $error = curl_error($ch);
-    echo "Erro na requisição: $error";
+    echo json_encode(['error' => curl_error($ch)]);
 } else {
-    $responseData = json_decode($response, true);
+    echo "<h3>Código HTTP: $codigoResposta</h3>";
     echo "<pre>";
-    print_r($responseData);
+    print_r(json_decode($response, true));
 }
 curl_close($ch);

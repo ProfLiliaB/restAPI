@@ -7,12 +7,13 @@ $data = [
     'email' => 'email@atualizado.com',
     'senha' => '321'
 ];
-$ch = curl_init(URL);
+$ch = curl_init(URL_PUT);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
 curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
 curl_setopt($ch, CURLOPT_HTTPHEADER, [
-    'Content-Type: application/json'
+    "Authorization: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0L3Jlc3Qvand0LnBocCIsImlhdCI6MTczMTk0NzE5MywiZXhwIjoxNzMxOTUwNzkzLCJkYXRhIjp7InVzZXJJZCI6MTIzLCJub21lIjoiSmhvbiBEb2UiLCJlbWFpbCI6ImVtYWlsQGVtYWlsLmNvbSJ9fQ.ifGodc9S8QXprWNRwEPxkrzxcsAAkxlcqSBvWx1Qy-I", 
+    "Content-Type: application/json" 
 ]);
 $response = curl_exec($ch);
 $codigoResposta = curl_getinfo($ch, CURLINFO_HTTP_CODE);

@@ -27,7 +27,7 @@ switch ($metodo) {
             $novo = [
                 'nome'  => $input['nome'],
                 'email' => $input['email'],
-                'senha' => password_hash($in['senha'], PASSWORD_DEFAULT)
+                'senha' => password_hash($input['senha'], PASSWORD_DEFAULT)
             ];
             $insert = $conexao->prepare("INSERT INTO usuario (nome, email, senha) VALUES (:nome, :email, :senha)");
             if ($insert->execute($novo)) {
@@ -51,7 +51,7 @@ switch ($metodo) {
                 'email' => $in['email'],
                 'senha' => password_hash($in['senha'], PASSWORD_DEFAULT)
             ];
-            $update = $conexao->prepare("UPDATE usuario SET nome = :nome, email = :email, senha = :senha WHERE id_usuario = :id");
+            $update = $conexao->prepare("UPDATE usuario SET nome = :nome, email = :email, senha = :senha WHERE id = :id");
             if ($update->execute($atualiza)) {
                 echo json_encode(['message' => 'Usuário atualizado com sucesso']);
             } else {
@@ -78,8 +78,7 @@ switch ($metodo) {
             http_response_code(400);
             echo json_encode(['message' => 'Id não encontrado']);
         }
-        break;
-        
+        break;        
     default:
         http_response_code(405);
         echo json_encode(['message' => 'Método inválido']);
